@@ -7,6 +7,9 @@
         "nombre":"Usuarios",
         "redirect": "usuarios"
     },{
+        "nombre":"Prestamos",
+        "redirect": "prestamos"
+    },{
         "nombre":"Reportes",
         "redirect": "reportes"
     }

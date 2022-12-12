@@ -9,6 +9,8 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ReportesComponent } from './reportes/reportes.component';
 import { CrearUsuarioComponent } from './usuarios/crear-usuario/crear-usuario.component';
+import { PrestamosComponent } from './prestamos/prestamos.component';
+import { CrearPrestamoComponent } from './prestamos/crear-prestamo/crear-prestamo.component';
 
 
 @NgModule({
@@ -18,7 +20,9 @@ import { CrearUsuarioComponent } from './usuarios/crear-usuario/crear-usuario.co
     UsuariosComponent,
     NavbarComponent,
     ReportesComponent,
-    CrearUsuarioComponent
+    CrearUsuarioComponent,
+    PrestamosComponent,
+    CrearPrestamoComponent
   ],
   imports: [
     CommonModule,

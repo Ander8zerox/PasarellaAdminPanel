@@ -1,0 +1,97 @@
+<div class="container">
+    <mat-toolbar>
+        <span>Prestamos</span>
+    </mat-toolbar>
+    <form [formGroup]="form" (ngSubmit)="buscarPrestamos()">
+      <mat-grid-list cols="4" rowHeight="100px">
+        <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <mat-form-field appearance="fill">
+              <mat-label>Fecha prestamo</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="fecha">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+          <button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">Buscar</button>
+          <button type="button" mat-raised-button color="primary" (click)="limpiarFiltros()" style="margin-left: 10px;">Limpiar</button>
+      </mat-grid-tile>
+      </mat-grid-list>
+    </form>
+    <mat-form-field appearance="standard" class="filter">
+      <mat-label>Filtrar</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+    </mat-form-field>
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef >
+          <mat-checkbox *ngIf="listPrestamos.length != 0"
+                          (change)="$event ? toggleAllRows() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()"
+                          [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null"
+                          [checked]="selection.isSelected(row)"
+                          [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>
+          </td>
+      </ng-container>
+    
+      <!-- Column -->
+      <ng-container matColumnDef="fechaPrestamo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Prestamo </th>
+        <td mat-cell *matCellDef="let element"> {{element.fechaPrestamo}} </td>
+      </ng-container>
+    
+      <!-- Column -->
+      <ng-container matColumnDef="nombreCliente">
+        <th mat-header-cell *matHeaderCellDef> Cliente </th>
+        <td mat-cell *matCellDef="let element"> {{element.nombreCliente}} </td>
+      </ng-container>
+    
+      <!-- Column -->
+      <ng-container matColumnDef="local">
+        <th mat-header-cell *matHeaderCellDef> Local </th>
+        <td mat-cell *matCellDef="let element"> {{element.local}} </td>
+      </ng-container>
+
+      <!-- Column -->
+      <ng-container matColumnDef="detalle">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Detalle </th>
+          <td mat-cell *matCellDef="let element"> {{element.detalle}} </td>
+        </ng-container>
+    
+      <!-- Column -->
+      <ng-container matColumnDef="observacion">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Observacion </th>
+        <td mat-cell *matCellDef="let element"> {{element.observacion}} </td>
+      </ng-container>
+
+        <!-- Column -->
+      <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+          <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+        </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No hay datos que conicidan con el filtro "{{input.value}}"</td>
+      </tr>
+    </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                      showFirstLastButtons 
+                      aria-label="Select page of periodic elements">
+      </mat-paginator>
+</div>
+</div>
