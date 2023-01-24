@@ -6,6 +6,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Prestamo } from 'src/app/interfaces/prestamo';
 import { PrestamoService } from 'src/app/services/prestamo.service';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { DetallePrestamoComponent } from './detalle-prestamo/detalle-prestamo.component';
 
 @Component({
   selector: 'app-prestamos',
@@ -17,6 +19,7 @@ export class PrestamosComponent implements OnInit {
   form:FormGroup;
   listPrestamos:Prestamo[]=[];
   estado: any[] = ['Asignado','Pendiente','Cancelado','Terminado'];
+  prestamo!:Prestamo;
 
   displayedColumns: string[] = ['select','fechaPrestamo', 'nombreCliente', 
   'local','detalle' ,'estado','observacion'];
@@ -64,7 +67,11 @@ export class PrestamosComponent implements OnInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
-  constructor(private fb:FormBuilder,private prestamoService:PrestamoService) {
+  constructor(
+    private fb:FormBuilder,
+    private prestamoService:PrestamoService,
+    public dialog: MatDialog
+    ) {
     
     this.form = this.fb.group(
       {
@@ -72,7 +79,6 @@ export class PrestamosComponent implements OnInit {
         recolector:['']
       }
     );
-
    }
 
   ngOnInit(): void {
@@ -91,6 +97,27 @@ export class PrestamosComponent implements OnInit {
   cargarPrestamos(){
     this.listPrestamos = this.prestamoService.getPrestamo();
     this.dataSource = new MatTableDataSource(this.listPrestamos);
+  }
+
+  cargarDetallePrestamo(idPrestamo: string){
+    this.listPrestamos.forEach(
+      prestamo => {
+        if(prestamo.idPrestamo == idPrestamo){
+          this.prestamo = prestamo;
+        }
+      }
+    );
+  }
+
+  openDialog(enterAnimationDuration: string, exitAnimationDuration: string, idPrestamo:string): void {
+    this.cargarDetallePrestamo(idPrestamo);
+    const dialogRef = this.dialog.open(DetallePrestamoComponent, {
+      width: '480px',
+      height: '450px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data:this.prestamo
+    });
   }
 
 }

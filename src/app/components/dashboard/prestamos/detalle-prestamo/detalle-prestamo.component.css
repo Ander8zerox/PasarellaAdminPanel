@@ -1,0 +1,17 @@
+button {
+    margin-right: 8px;
+  }
+
+  table {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+
+  th {
+    width: 15%;
+  }

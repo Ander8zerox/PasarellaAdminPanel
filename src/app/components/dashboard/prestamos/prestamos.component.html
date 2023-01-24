@@ -1,6 +1,9 @@
 <div class="container">
     <mat-toolbar>
         <span>Prestamos</span>
+        <div class="example-spacer">
+        </div>
+        <button mat-raised-button color="primary" routerLink="/dashboard/crear-prestamo">Crear</button>
     </mat-toolbar>
     <form [formGroup]="form" (ngSubmit)="buscarPrestamos()">
       <mat-grid-list cols="4" rowHeight="100px">
@@ -66,7 +69,11 @@
       <!-- Column -->
       <ng-container matColumnDef="detalle">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Detalle </th>
-          <td mat-cell *matCellDef="let element"> {{element.detalle}} </td>
+          <td mat-cell *matCellDef="let element, let i = index"> 
+            <a class="pointer" style="color: #1f516f" (click)="openDialog('0ms', '0ms',element.idPrestamo)" matTooltip="Ver Detalle">
+              <mat-icon>search</mat-icon>
+          </a>
+          </td>
         </ng-container>
     
       <!-- Column -->

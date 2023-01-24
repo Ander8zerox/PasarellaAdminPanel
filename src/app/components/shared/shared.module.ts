@@ -19,9 +19,12 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatCardModule} from '@angular/material/card';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatSelectModule} from '@angular/material/select';
-import { MatNativeDateModule } from '@angular/material/core';
+import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { FormsModule } from '@angular/forms';
+import {MatDialogModule} from '@angular/material/dialog';
 
 
 
@@ -50,7 +53,10 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatSelectModule,
     MatNativeDateModule,
     MatDatepickerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatAutocompleteModule,
+    FormsModule,
+    MatDialogModule
   ],
   exports:[
     MatSliderModule,
@@ -72,7 +78,10 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatSelectModule,
     MatNativeDateModule,
     MatDatepickerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatAutocompleteModule,
+    FormsModule,
+    MatDialogModule
   ]
 })
 export class SharedModule { }

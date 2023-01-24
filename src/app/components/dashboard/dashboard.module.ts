@@ -11,6 +11,7 @@ import { ReportesComponent } from './reportes/reportes.component';
 import { CrearUsuarioComponent } from './usuarios/crear-usuario/crear-usuario.component';
 import { PrestamosComponent } from './prestamos/prestamos.component';
 import { CrearPrestamoComponent } from './prestamos/crear-prestamo/crear-prestamo.component';
+import { DetallePrestamoComponent } from './prestamos/detalle-prestamo/detalle-prestamo.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { CrearPrestamoComponent } from './prestamos/crear-prestamo/crear-prestam
     ReportesComponent,
     CrearUsuarioComponent,
     PrestamosComponent,
-    CrearPrestamoComponent
+    CrearPrestamoComponent,
+    DetallePrestamoComponent
   ],
   imports: [
     CommonModule,

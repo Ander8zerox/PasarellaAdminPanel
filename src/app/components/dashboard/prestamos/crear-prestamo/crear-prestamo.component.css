@@ -1,0 +1,12 @@
+.ancho{
+    width: 90%;
+}
+
+table {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  th {
+    width: 30%;
+  }

@@ -6,6 +6,7 @@ import { ReportesComponent } from './reportes/reportes.component';
 import { CrearUsuarioComponent } from './usuarios/crear-usuario/crear-usuario.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { PrestamosComponent } from './prestamos/prestamos.component';
+import { CrearPrestamoComponent } from './prestamos/crear-prestamo/crear-prestamo.component';
 
 const routes: Routes = [
   {path:'', component:DashboardComponent, children:[
@@ -14,7 +15,8 @@ const routes: Routes = [
     {path:'reportes', component: ReportesComponent},
     {path:'crear-usuario', component:CrearUsuarioComponent},
     {path:'editar-usuario/:id', component:CrearUsuarioComponent},
-    {path:'prestamos', component:PrestamosComponent}
+    {path:'prestamos', component:PrestamosComponent},
+    {path: 'crear-prestamo', component:CrearPrestamoComponent}
   ]}
 ];
 

@@ -1,1 +1,112 @@
-<p>crear-prestamo works!</p>
+<div class="container">
+    <mat-toolbar>
+        <span>{{titulo}}</span>
+      </mat-toolbar>
+    <mat-card style="margin-top: 10px;">
+        <form [formGroup]="form" (ngSubmit)="crearPrestamo()">
+            <mat-grid-list  cols="4" rowHeight="70px">
+                <mat-grid-tile [colspan]="1" [rowspan]="1">
+                    <mat-form-field class="ancho">
+                        <mat-label>Fecha</mat-label>
+                        <input [disabled]="true" matInput autocomplete="off" [value]="fecha | date: 'medium'">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="2" [rowspan]="1">
+                        <mat-form-field class="ancho">
+                            <mat-label>Cliente</mat-label>
+                            <input matInput 
+                            [formControl]="nombreCliente"
+                            [matAutocomplete] ="auto" >
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let usuario of filteredOptions | async" [value]="usuario.nombre">
+                                  {{usuario.nombre}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-form-field class="ancho" style="margin-left: 9px;">
+                            <mat-label>Local</mat-label>
+                            <input matInput autocomplete="off" [value]="local">
+                        </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="3" [rowspan]="1">
+                    <mat-form-field class="ancho">
+                        <mat-label>Producto</mat-label>
+                        <input matInput 
+                        [formControl]="producto"
+                        [matAutocomplete] ="autoB" >
+                        <mat-autocomplete #autoB="matAutocomplete">
+                            <mat-option *ngFor="let producto of filteredProductOptions | async" [value]="producto.nombre">
+                              {{producto.nombre}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <mat-form-field class="ancho" style="margin-left: 9px;">
+                        <mat-label>Codigo</mat-label>
+                        <input matInput autocomplete="off" [formControl]="codigo">
+                    </mat-form-field>
+                    <mat-form-field class="ancho" style="margin-left: 9px;">
+                        <mat-label>Precio</mat-label>
+                        <input matInput autocomplete="off" [formControl]="precio">
+                    </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1" >
+                <button type="button" (click)="cargarLocal();cargarCodigoPrecio();AgregarProducto();cargarTabla()" mat-raised-button style="margin-right: 10px;" color="primary">Agregar</button>
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="3" [rowspan]="1">
+                <mat-form-field class="ancho">
+                    <mat-label>Estado</mat-label>
+                    <input [disabled]="true" matInput autocomplete="off" [value]="estado">
+                </mat-form-field>
+                <mat-form-field class="ancho" style="margin-left: 9px;">
+                    <mat-label>Observaciòn</mat-label>
+                    <textarea matInput [formControl]="observacion"></textarea>
+                </mat-form-field>
+                <mat-form-field class="ancho">
+                    <mat-label>Total</mat-label>
+                    <input [disabled]="true" matInput autocomplete="off" [formControl]="total">
+                </mat-form-field>
+            </mat-grid-tile> 
+            </mat-grid-list>               
+        </form>
+        
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        
+            <!-- Position Column -->
+            <ng-container matColumnDef="codigo">
+            <th mat-header-cell *matHeaderCellDef> Codigo </th>
+            <td mat-cell *matCellDef="let element"> {{element.codigo}} </td>
+            </ng-container>
+        
+            <!-- Name Column -->
+            <ng-container matColumnDef="producto">
+            <th mat-header-cell *matHeaderCellDef> Producto </th>
+            <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+            </ng-container>
+        
+            <!-- Weight Column -->
+            <ng-container matColumnDef="precio">
+            <th mat-header-cell *matHeaderCellDef> Precio </th>
+            <td mat-cell *matCellDef="let element"> {{element.precio}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let element; let i = index" style="text-align: right;">
+                <a class="pointer" (click)="eliminarProducto(i)" style="color: #e15639" matTooltip="Eliminar Usuario">
+                    <mat-icon>delete</mat-icon>
+                </a>
+            </td>
+              </ng-container>
+        
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <mat-grid-list  cols="1" rowHeight="70px">
+            <mat-grid-tile [colspan]="1" [rowspan]="1" >
+                <button type="button" (click)="volver()" mat-raised-button style="margin-right: 10px;">Volver</button>
+                <button type="button" (click)="crearPrestamo()" mat-raised-button style="margin-right: 10px;" color="primary">Generar</button>
+            </mat-grid-tile> 
+        </mat-grid-list>
+    </mat-card>
+</div>

@@ -1,57 +1,89 @@
 import { Injectable } from '@angular/core';
 import { Prestamo } from '../interfaces/prestamo';
+import { Producto } from '../interfaces/producto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PrestamoService {
+  
+  listProductos: Producto[] = [
+    {
+      nombre:"Mouse inalambrico",
+      codigo:"002",
+      precio:"35000"
+    },
+    {
+      nombre:"Teclado inalambrico",
+      codigo:"003",
+      precio:"40000"
+    },
+    {
+      nombre:"Monitor",
+      codigo:"004",
+      precio:"230000"
+    }
+  ];
+
   listPrestamos: Prestamo[] = [
       {
-        fechaPrestamo:"22-02-12",
+        idPrestamo:"p001",
+        fechaPrestamo:"22 ene 2023, 7:57:04",
         nombreCliente:"Juan Goez",
         local:"104",
-        detalle:"Cable usb 3.0",
         estado:"Pendiente",
+        valor:"50000",
+        detalle:this.listProductos,
         observacion:"Se entrega en caja azul"
       },
       {
-        fechaPrestamo:"22-02-11",
+        idPrestamo:"p002",
+        fechaPrestamo:"22 nov 2022, 7:57:04",
         nombreCliente:"Diego Meneses",
         local:"101",
-        detalle:"Mouse inalambrico",
         estado:"Cerrado",
+        valor:"300000",
+        detalle:this.listProductos,
         observacion:"Se entrega en caja verde"
       },
       {
-        fechaPrestamo:"05-02-11",
+        idPrestamo:"p003",
+        fechaPrestamo:"22 dic 2022, 7:57:04",
         nombreCliente:"Viviana Savina",
         local:"203",
-        detalle:"Teclado inalambrico",
-        estado:"Abierto",
+        estado:"Cancelado",
+        valor:"39000",
+        detalle:this.listProductos,
         observacion:"Se entrega en caja amarilla"
       },
       {
-        fechaPrestamo:"16-02-13",
+        idPrestamo:"p004",
+        fechaPrestamo:"22 mar 2022, 7:57:04",
         nombreCliente:"Fabio Rivera",
         local:"204",
-        detalle:"Torre ultra",
         estado:"Pendiente",
+        valor:"25000",
+        detalle:this.listProductos,
         observacion:"Se entrega en caja naranja"
       },
       {
-        fechaPrestamo:"22-12-13",
+        idPrestamo:"p005",
+        fechaPrestamo:"03 abr 2022, 8:57:04",
         nombreCliente:"Jimena Jimenez",
         local:"145",
-        detalle:"Monitor ultra",
         estado:"Cerrado",
+        valor:"15000",
+        detalle:this.listProductos,
         observacion:"Se entrega en caja Beige"
       },
       {
-        fechaPrestamo:"21-11-10",
+        idPrestamo:"p006",
+        fechaPrestamo:"22 jul 2022, 9:57:04",
         nombreCliente:"Eduardo Prieto",
         local:"332",
-        detalle:"Case ultra",
         estado:"Cerrado",
+        valor:"30000",
+        detalle:this.listProductos,
         observacion:"Se entrega en caja Vinotinto"
       }
   ];
