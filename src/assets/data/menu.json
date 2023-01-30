@@ -1,6 +1,6 @@
 [
     {
-        "nombre":"Dashboard",
+        "nombre":"Inicio",
         "redirect": "/dashboard"
     },
     {
@@ -9,6 +9,9 @@
     },{
         "nombre":"Prestamos",
         "redirect": "prestamos"
+    },{
+        "nombre":"Productos",
+        "redirect": "productos"
     },{
         "nombre":"Reportes",
         "redirect": "reportes"

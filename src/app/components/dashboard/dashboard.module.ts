@@ -12,6 +12,7 @@ import { CrearUsuarioComponent } from './usuarios/crear-usuario/crear-usuario.co
 import { PrestamosComponent } from './prestamos/prestamos.component';
 import { CrearPrestamoComponent } from './prestamos/crear-prestamo/crear-prestamo.component';
 import { DetallePrestamoComponent } from './prestamos/detalle-prestamo/detalle-prestamo.component';
+import { ProductosComponent } from './productos/productos.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { DetallePrestamoComponent } from './prestamos/detalle-prestamo/detalle-p
     CrearUsuarioComponent,
     PrestamosComponent,
     CrearPrestamoComponent,
-    DetallePrestamoComponent
+    DetallePrestamoComponent,
+    ProductosComponent
   ],
   imports: [
     CommonModule,
