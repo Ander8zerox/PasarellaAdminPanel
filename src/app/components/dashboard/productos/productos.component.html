@@ -1,5 +1,54 @@
 <div class="container">
     <mat-toolbar>
         <span>Productos</span>
+        <div class="example-spacer"></div>
+        <button mat-raised-button color="primary" routerLink="/dashboard/crear-producto">Crear</button>
       </mat-toolbar>
+
+      <div *ngIf="listProductos.length > 0">
+        <mat-form-field appearance="standard">
+          <mat-label>Filtrar</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input autocomplete="off">
+        </mat-form-field>
+        <div  class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource" matSort>
+            <!-- Position Column -->
+            <ng-container matColumnDef="codigo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Codigo </th>
+              <td mat-cell *matCellDef="let element"> {{element.codigo}} </td>
+            </ng-container>
+          
+            <!-- Name Column -->
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef> Nombre </th>
+              <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
+            </ng-container>
+          
+            <!-- Weight Column -->
+            <ng-container matColumnDef="precio">
+              <th mat-header-cell *matHeaderCellDef> Precio </th>
+              <td mat-cell *matCellDef="let element"> {{element.precio}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell *matCellDef="let element; let i = index" style="text-align: right;">
+              <a class="pointer" style="color: #1f516f" [routerLink]="['/dashboard/editar-producto',element.codigo]" matTooltip="Editar Producto">
+                  <mat-icon>edit</mat-icon>
+              </a>
+              <a class="pointer" (click)="eliminarProducto(i)" style="color: #e15639" matTooltip="Eliminar Producto">
+                  <mat-icon>delete</mat-icon>
+              </a>
+          </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table> 
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator> 
+        </div>
+      </div>
+      <h2  *ngIf="listProductos.length == 0">
+        No hay productos para mostrar
+      </h2>
 </div>

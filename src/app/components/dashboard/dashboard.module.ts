@@ -13,6 +13,7 @@ import { PrestamosComponent } from './prestamos/prestamos.component';
 import { CrearPrestamoComponent } from './prestamos/crear-prestamo/crear-prestamo.component';
 import { DetallePrestamoComponent } from './prestamos/detalle-prestamo/detalle-prestamo.component';
 import { ProductosComponent } from './productos/productos.component';
+import { CrearProductoComponent } from './productos/crear-producto/crear-producto.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { ProductosComponent } from './productos/productos.component';
     PrestamosComponent,
     CrearPrestamoComponent,
     DetallePrestamoComponent,
-    ProductosComponent
+    ProductosComponent,
+    CrearProductoComponent
   ],
   imports: [
     CommonModule,
