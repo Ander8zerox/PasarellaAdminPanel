@@ -1,7 +1,9 @@
 export interface Usuario{
-    nombre: string,
-    documento:string,
-    telefono:string,
-    local: string,
-    sexo: string
+    idCustomer:number,
+    name: string,
+    document:string,
+    telephone:string,
+    jobLocalName: string,
+    gender: string,
+    idLocalCreation:string
 }

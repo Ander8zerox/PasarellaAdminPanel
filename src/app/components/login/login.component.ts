@@ -4,6 +4,7 @@ import { MatSnackBar,
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition, } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,10 @@ horizontalPosition: MatSnackBarHorizontalPosition = 'right';
 verticalPosition: MatSnackBarVerticalPosition = 'bottom';
 loading = false;
 
-  constructor(private fb:FormBuilder,private _snackBar: MatSnackBar, private router:Router) { 
+  constructor(private fb:FormBuilder,
+              private _snackBar: MatSnackBar, 
+              private router:Router,
+              private loginService:LoginService) { 
     this.form = this.fb.group({
       usuario:['',Validators.required],
       password:['',Validators.required]
@@ -34,12 +38,21 @@ loading = false;
     console.log(usuario);
     console.log(password);
 
-    if(usuario == 'ecoadmin' && password == 'ecoadmin'){
-      this.fakeLoading();
-    }else{
-      this.error();
-      this.form.reset();
-    }
+    this.loginService.getUser(usuario)
+      .subscribe(response => {
+
+        const user:any = response;
+        if(null != user && password == user.password){
+          this.fakeLoading();
+        }else{
+          this.error();
+          this.form.reset();
+        }
+        
+      }
+    );
+    
+    
   }
 
   error(){

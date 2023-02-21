@@ -18,8 +18,8 @@
                             [formControl]="nombreCliente"
                             [matAutocomplete] ="auto" >
                             <mat-autocomplete #auto="matAutocomplete">
-                                <mat-option *ngFor="let usuario of filteredOptions | async" [value]="usuario.nombre">
-                                  {{usuario.nombre}}
+                                <mat-option *ngFor="let usuario of filteredOptions | async" [value]="usuario.name">
+                                  {{usuario.name}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>

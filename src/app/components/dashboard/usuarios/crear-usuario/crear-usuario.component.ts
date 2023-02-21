@@ -17,6 +17,7 @@ export class CrearUsuarioComponent implements OnInit {
   form:FormGroup;
   id:string|null;
   titulo:string = "Crear Usuario";
+  usuario!:Usuario;
 
   constructor(private fb:FormBuilder,
      private usuarioService:UsuarioService,
@@ -44,20 +45,32 @@ export class CrearUsuarioComponent implements OnInit {
   agregarUsuario(){
 
     const user:Usuario = {
-      nombre: this.form.value.nombre,
-      documento: this.form.value.documento,
-      telefono: this.form.value.telefono,
-      local:this.form.value.local,
-      sexo: this.form.value.sexo
+      idCustomer:0,
+      name: this.form.value.nombre,
+      document: this.form.value.documento,
+      telephone: this.form.value.telefono,
+      jobLocalName:this.form.value.local,
+      gender: this.form.value.sexo,
+      idLocalCreation:"2"
     }
-    this.usuarioService.agregarusuario(user);
-    this.router.navigate(['/dashboard/usuarios']);
+    this.usuarioService.agregarusuario(user).subscribe({
+      next:response => {
+          this.router.navigate(['/dashboard/usuarios']);
 
-    this._snackBar.open('Usuario agregado con exito!','',{
-      duration:1500,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    })
+          this._snackBar.open('Usuario agregado con exito!','',{
+            duration:1500,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          })
+      }, error: error =>{
+        this._snackBar.open('Ocurrio un error al agregar el usuario','',{
+          duration:1500,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        })
+      }
+  });
+
   }
 
   volver(){
@@ -68,16 +81,27 @@ export class CrearUsuarioComponent implements OnInit {
     
     if(this.id !== null){
       this.titulo="Editar Usuario";
-      const usuario:Usuario = this.usuarioService.getUsuarioId(this.id);
-      console.log(usuario);
-      this.form.setValue({
-            nombre: usuario.nombre,
-            documento: usuario.documento,
-            telefono: usuario.telefono,
-            local: usuario.local,
-            sexo: usuario.sexo
-          })
+       this.usuarioService.getUsuarioId(this.id).subscribe(
+        response=>{
+          
+      console.log(this.usuario);
+      
+      console.log("Consultado");
+          this.usuario = response;
+          this.setValuesToForm(this.usuario);
+        }
+      );
     }
+  }
+
+  setValuesToForm(usuario:Usuario){
+    this.form.setValue({
+      nombre: this.usuario.name,
+      documento: this.usuario.document,
+      telefono: this.usuario.telephone,
+      local: this.usuario.jobLocalName,
+      sexo: this.usuario.gender
+    })
   }
 
   editarUsuario(){

@@ -29,11 +29,7 @@
             <mat-grid-tile [colspan]="1" [rowspan]="1" >
                 <mat-form-field class="ancho">
                     <mat-label>Local</mat-label>
-                    <mat-select formControlName="local">
-                      <mat-option *ngFor="let item of local" [value]="item">
-                        {{item}}
-                      </mat-option>
-                    </mat-select>
+                    <input matInput autocomplete="off" formControlName="local">
                   </mat-form-field>
              </mat-grid-tile>
             <mat-grid-tile [colspan]="1" [rowspan]="1" >

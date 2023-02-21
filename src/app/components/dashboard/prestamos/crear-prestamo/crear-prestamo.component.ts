@@ -72,7 +72,7 @@ export class CrearPrestamoComponent implements OnInit {
     const filterValue = value.toLowerCase();
 
     return this.listUsuarios.filter(usuario => 
-      usuario.nombre.toLowerCase().includes(filterValue)
+      usuario.name.toLowerCase().includes(filterValue)
       );
       
   }
@@ -87,7 +87,12 @@ export class CrearPrestamoComponent implements OnInit {
   }
 
   cargarUsuarios(){
-    this.listUsuarios = this.usuarioService.getUsuario();
+    this.usuarioService.getUsuarios("2").subscribe(
+      response=>{
+        console.log(response)
+        this.listUsuarios = response;
+      }
+    )
   }
 
   cargarProductos(){
@@ -113,8 +118,8 @@ export class CrearPrestamoComponent implements OnInit {
     console.log("Este es el nombre del cliente " + this.nombreCliente.value);
       this.listUsuarios.forEach(
         elemento => {
-          if(this.nombreCliente.value == elemento.nombre){
-              this.local = elemento.local;
+          if(this.nombreCliente.value == elemento.name){
+              this.local = elemento.jobLocalName;
           }
         }
       )
