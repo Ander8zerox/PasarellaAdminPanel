@@ -8,6 +8,8 @@ import { Prestamo } from 'src/app/interfaces/prestamo';
 import { PrestamoService } from 'src/app/services/prestamo.service';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { DetallePrestamoComponent } from './detalle-prestamo/detalle-prestamo.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-prestamos',
@@ -70,7 +72,8 @@ export class PrestamosComponent implements OnInit {
   constructor(
     private fb:FormBuilder,
     private prestamoService:PrestamoService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
     ) {
     
     this.form = this.fb.group(
@@ -85,31 +88,50 @@ export class PrestamosComponent implements OnInit {
   }
 
   buscarPrestamos(){
+    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
     const fecha = this.form.value.fecha;
-    this.cargarPrestamos();
-    this.dataSource.paginator = this.paginator;
+    this.prestamoService.getPrestamosFechaYLocalCreacion(fecha,localSession).subscribe(
+      {
+        next:response=>{
+          this.listPrestamos = response;
+          this.dataSource = new MatTableDataSource(this.listPrestamos);
+          this.dataSource.paginator = this.paginator;
+          this._snackBar.open('Lista de productos cargada','',{
+            duration:2500,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          })
+        }, error: error =>{
+          this._snackBar.open('Error al cargar la lista de prestamos','',{
+            duration:2500,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          })
+        }
+      }
+    );
   }
 
   limpiarFiltros(){
     this.form.reset();
   }
 
-  cargarPrestamos(){
-    this.listPrestamos = this.prestamoService.getPrestamo();
-    this.dataSource = new MatTableDataSource(this.listPrestamos);
+  cargarPrestamos(fecha:string,localCreacion:number){
+    console.log("wue paso");
+    
   }
 
-  cargarDetallePrestamo(idPrestamo: string){
+  cargarDetallePrestamo(idPrestamo: number){
     this.listPrestamos.forEach(
       prestamo => {
-        if(prestamo.idPrestamo == idPrestamo){
+        if(prestamo.idLending == idPrestamo){
           this.prestamo = prestamo;
         }
       }
     );
   }
 
-  openDialog(enterAnimationDuration: string, exitAnimationDuration: string, idPrestamo:string): void {
+  openDialog(enterAnimationDuration: string, exitAnimationDuration: string, idPrestamo:number): void {
     this.cargarDetallePrestamo(idPrestamo);
     const dialogRef = this.dialog.open(DetallePrestamoComponent, {
       width: '480px',

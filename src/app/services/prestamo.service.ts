@@ -1,100 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Prestamo } from '../interfaces/prestamo';
 import { Producto } from '../interfaces/producto';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PrestamoService {
-  
-  listProductos: Producto[] = [
-    {
-      idProduct:1,
-      name:"Mouse inalambrico",
-      code:"002",
-      price:"35000",
-      idLocalCreation:2
-    },
-    { idProduct:2,
-      idLocalCreation:2,
-      name:"Teclado inalambrico",
-      code:"003",
-      price:"40000"
-    },
-    {
-      idProduct:3,
-      idLocalCreation:2,
-      name:"Monitor",
-      code:"004",
-      price:"230000"
-    }
-  ];
+  prestamo!:Prestamo;
+  private baseUrl = 'http://localhost:8080/';
 
-  listPrestamos: Prestamo[] = [
-      {
-        idPrestamo:"p001",
-        fechaPrestamo:"22 ene 2023, 7:57:04",
-        nombreCliente:"Juan Goez",
-        local:"104",
-        estado:"Pendiente",
-        valor:"50000",
-        detalle:this.listProductos,
-        observacion:"Se entrega en caja azul"
-      },
-      {
-        idPrestamo:"p002",
-        fechaPrestamo:"22 nov 2022, 7:57:04",
-        nombreCliente:"Diego Meneses",
-        local:"101",
-        estado:"Cerrado",
-        valor:"300000",
-        detalle:this.listProductos,
-        observacion:"Se entrega en caja verde"
-      },
-      {
-        idPrestamo:"p003",
-        fechaPrestamo:"22 dic 2022, 7:57:04",
-        nombreCliente:"Viviana Savina",
-        local:"203",
-        estado:"Cancelado",
-        valor:"39000",
-        detalle:this.listProductos,
-        observacion:"Se entrega en caja amarilla"
-      },
-      {
-        idPrestamo:"p004",
-        fechaPrestamo:"22 mar 2022, 7:57:04",
-        nombreCliente:"Fabio Rivera",
-        local:"204",
-        estado:"Pendiente",
-        valor:"25000",
-        detalle:this.listProductos,
-        observacion:"Se entrega en caja naranja"
-      },
-      {
-        idPrestamo:"p005",
-        fechaPrestamo:"03 abr 2022, 8:57:04",
-        nombreCliente:"Jimena Jimenez",
-        local:"145",
-        estado:"Cerrado",
-        valor:"15000",
-        detalle:this.listProductos,
-        observacion:"Se entrega en caja Beige"
-      },
-      {
-        idPrestamo:"p006",
-        fechaPrestamo:"22 jul 2022, 9:57:04",
-        nombreCliente:"Eduardo Prieto",
-        local:"332",
-        estado:"Cerrado",
-        valor:"30000",
-        detalle:this.listProductos,
-        observacion:"Se entrega en caja Vinotinto"
-      }
-  ];
-  constructor() { }
+  listProductos: Producto[] = [];
 
+  listPrestamos: Prestamo[] = [];
+  constructor(private http:HttpClient) { }
+//lendingsObtainByDate?date=19 feb 2023, 7:36:24&idLocalCreation=2
   getPrestamo(){
     return this.listPrestamos.slice();
+  }
+
+  getPrestamosFechaYLocalCreacion(date:string,idLocalCreation:number){
+    return this.http.get<Prestamo[]>(this.baseUrl + "lendingsObtainByDate?date="+date+"&idLocalCreation="+idLocalCreation);
+
   }
 }

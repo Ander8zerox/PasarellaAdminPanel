@@ -20,8 +20,8 @@ export class DetallePrestamoComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Prestamo) { }
 
   ngOnInit(): void {
-    this.estado.setValue(this.data.estado);
-    this.dataSource = new MatTableDataSource(this.data.detalle);
+    this.estado.setValue(this.data.status);
+    this.dataSource = new MatTableDataSource(this.data.products);
   }
 
   /*cargarProductos(){

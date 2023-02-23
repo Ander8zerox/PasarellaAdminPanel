@@ -109,7 +109,6 @@ export class CrearPrestamoComponent implements OnInit {
     this.productoService.getProductos(localSession).subscribe({
       next:response=>{
         this.listProductos = response;
-        this.dataSource= new MatTableDataSource(this.listProductos);
       }, error: error =>{
         this._snackBar.open('Error al cargar la lista de productos','',{
           duration:2500,
