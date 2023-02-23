@@ -43,7 +43,7 @@ export class CrearUsuarioComponent implements OnInit {
   }
 
   agregarUsuario(){
-
+    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
     const user:Usuario = {
       idCustomer:0,
       name: this.form.value.nombre,
@@ -51,7 +51,7 @@ export class CrearUsuarioComponent implements OnInit {
       telephone: this.form.value.telefono,
       jobLocalName:this.form.value.local,
       gender: this.form.value.sexo,
-      idLocalCreation:"2"
+      idLocalCreation:localSession
     }
     this.usuarioService.agregarusuario(user).subscribe({
       next:response => {
@@ -83,10 +83,7 @@ export class CrearUsuarioComponent implements OnInit {
       this.titulo="Editar Usuario";
        this.usuarioService.getUsuarioId(this.id).subscribe(
         response=>{
-          
-      console.log(this.usuario);
       
-      console.log("Consultado");
           this.usuario = response;
           this.setValuesToForm(this.usuario);
         }
@@ -105,12 +102,43 @@ export class CrearUsuarioComponent implements OnInit {
   }
 
   editarUsuario(){
+
+    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
+    const customer:Usuario = {
+      idCustomer:this.usuario.idCustomer,
+      name: this.form.value.nombre,
+      document: this.form.value.documento,
+      telephone: this.form.value.telefono,
+      jobLocalName:this.form.value.local,
+      gender: this.form.value.sexo,
+      idLocalCreation:localSession
+    }
+
     this.router.navigate(['/dashboard/usuarios']);
     this._snackBar.open('Usuario editado con exito!','',{
       duration:1500,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
     })
+
+
+    this.usuarioService.updateUsuarios(customer.idCustomer,customer).subscribe({
+      next:response => {
+          this._snackBar.open('Usuario editado con exito!','',{
+            duration:3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          })
+          this.router.navigate(['/dashboard/usuarios']);
+      }, error: error =>{
+        console.log(JSON.stringify(error));
+        this._snackBar.open('Ocurrio un error al editar el usuario','',{
+          duration:4000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        })
+      }
+  });
   }
 
 }

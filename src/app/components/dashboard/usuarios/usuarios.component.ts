@@ -15,7 +15,6 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 export class UsuariosComponent implements OnInit {
 
   listUsuarios: Usuario[]=[];
-
   displayedColumns: string[] = ['nombre', 'documento', 'telefono', 'local','sexo','acciones'];
   dataSource!: MatTableDataSource<any>;
 
@@ -29,9 +28,9 @@ export class UsuariosComponent implements OnInit {
   }
 
   cargarUsuarios(){
-    this.usuarioService.getUsuarios("2").subscribe(
+    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
+    this.usuarioService.getUsuarios(localSession).subscribe(
       response=>{
-        console.log(response)
         this.listUsuarios = response;
         this.dataSource= new MatTableDataSource(this.listUsuarios);
       }
@@ -49,12 +48,12 @@ export class UsuariosComponent implements OnInit {
   }
 
   eliminarUsuario(index: number){
-    console.log(index);
-    this.usuarioService.eliminarUsuario(index);
-    this.cargarUsuarios();
+    //console.log(index);
+    //this.usuarioService.eliminarUsuario(index);
+    //this.cargarUsuarios();
 
-    this._snackBar.open('Usuario eliminado con exito','',{
-      duration:1500,
+    this._snackBar.open('No es posible eliminar usuarios en este momento','',{
+      duration:2500,
       horizontalPosition: 'center',
       verticalPosition: 'bottom',
     })

@@ -87,7 +87,8 @@ export class CrearPrestamoComponent implements OnInit {
   }
 
   cargarUsuarios(){
-    this.usuarioService.getUsuarios("2").subscribe(
+    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
+    this.usuarioService.getUsuarios(localSession).subscribe(
       response=>{
         console.log(response)
         this.listUsuarios = response;
