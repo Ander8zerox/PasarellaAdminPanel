@@ -39,8 +39,33 @@ export class CrearProductoComponent implements OnInit {
     this.esEditar();
   }
 
-  agregarProducto(){
+  crearProducto(){
+    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
+    const producto:Producto = {
+      idProduct:0,
+      name: this.form.value.nombre,
+      code: this.form.value.codigo,
+      price: this.form.value.precio,
+      idLocalCreation:localSession
+    }
 
+    this.productoService.crearProducto(producto).subscribe({
+      next:response => {
+          this._snackBar.open('Producto creado con exito!','',{
+            duration:3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          })
+          this.router.navigate(['/dashboard/productos']);
+      }, error: error =>{
+        console.log(JSON.stringify(error));
+        this._snackBar.open('Ocurrio un error al crear el producto','',{
+          duration:4000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        })
+      }
+  });
   }
 
   volver(){

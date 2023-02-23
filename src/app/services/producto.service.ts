@@ -14,11 +14,15 @@ export class ProductoService {
   listProductos:Producto[] = []
 
   constructor(private http:HttpClient) { }
+
+  crearProducto(producto:Producto):Observable<Producto>{
+    return this.http.post<Producto>(this.baseUrl+"productCreation",producto)
+  }
  
   getProductoId(id:string):Observable<Producto>{
     return this.http.get<Producto>(this.baseUrl + "productObtainById?idProduct="+id);
 
-}
+  }
  
   getProductos(idLocalCreation:string){
     return this.http.get<Producto[]>(this.baseUrl + "productObtainAll?idLocalCreation="+idLocalCreation);

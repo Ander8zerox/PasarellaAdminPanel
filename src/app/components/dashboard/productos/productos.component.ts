@@ -55,6 +55,12 @@ export class ProductosComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  eliminarProducto(index: number){}
+  eliminarProducto(index: number){
+      this._snackBar.open('No es posible eliminar productos en este momento','',{
+        duration:2500,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+      })
+  }
 
 }
