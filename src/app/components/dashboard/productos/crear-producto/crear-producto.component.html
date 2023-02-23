@@ -28,8 +28,8 @@
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="1" [rowspan]="1" >
                     <button type="button" (click)="volver()" mat-raised-button style="margin-right: 10px;">Volver</button>
-                    <button type="submit" *ngIf="codigo == null" [disabled]="form.invalid" mat-raised-button color="primary">Aceptar</button>
-                    <button type="button" *ngIf="codigo !== null" (click)="editarProducto()" [disabled]="form.invalid" mat-raised-button color="primary">Enviar</button>
+                    <button type="submit" *ngIf="idProducto == null" [disabled]="form.invalid" mat-raised-button color="primary">Aceptar</button>
+                    <button type="button" *ngIf="idProducto !== null" (click)="editarProducto()" [disabled]="form.invalid" mat-raised-button color="primary">Enviar</button>
                  </mat-grid-tile>
             </mat-grid-list>
         </form>

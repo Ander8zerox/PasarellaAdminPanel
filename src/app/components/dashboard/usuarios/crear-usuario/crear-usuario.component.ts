@@ -113,32 +113,23 @@ export class CrearUsuarioComponent implements OnInit {
       gender: this.form.value.sexo,
       idLocalCreation:localSession
     }
-
-    this.router.navigate(['/dashboard/usuarios']);
-    this._snackBar.open('Usuario editado con exito!','',{
-      duration:1500,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    })
-
-
     this.usuarioService.updateUsuarios(customer.idCustomer,customer).subscribe({
-      next:response => {
-          this._snackBar.open('Usuario editado con exito!','',{
-            duration:3000,
+        next:response => {
+            this._snackBar.open('Usuario editado con exito!','',{
+              duration:3000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+            })
+            this.router.navigate(['/dashboard/usuarios']);
+        }, error: error =>{
+          console.log(JSON.stringify(error));
+          this._snackBar.open('Ocurrio un error al editar el usuario','',{
+            duration:4000,
             horizontalPosition: 'center',
             verticalPosition: 'bottom',
           })
-          this.router.navigate(['/dashboard/usuarios']);
-      }, error: error =>{
-        console.log(JSON.stringify(error));
-        this._snackBar.open('Ocurrio un error al editar el usuario','',{
-          duration:4000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        })
-      }
-  });
+        }
+    });
   }
 
 }

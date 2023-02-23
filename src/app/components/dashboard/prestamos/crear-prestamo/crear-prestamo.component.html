@@ -35,8 +35,8 @@
                         [formControl]="producto"
                         [matAutocomplete] ="autoB" >
                         <mat-autocomplete #autoB="matAutocomplete">
-                            <mat-option *ngFor="let producto of filteredProductOptions | async" [value]="producto.nombre">
-                              {{producto.nombre}}
+                            <mat-option *ngFor="let producto of filteredProductOptions | async" [value]="producto.name">
+                              {{producto.name}}
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>

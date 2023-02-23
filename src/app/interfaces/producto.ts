@@ -1,5 +1,7 @@
 export interface Producto{
-    codigo:string;
-    nombre:string;
-    precio:string;
+    idProduct:number;
+    code:string;
+    name:string;
+    price:string;
+    idLocalCreation:number;
 }

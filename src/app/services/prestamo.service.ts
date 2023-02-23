@@ -9,19 +9,24 @@ export class PrestamoService {
   
   listProductos: Producto[] = [
     {
-      nombre:"Mouse inalambrico",
-      codigo:"002",
-      precio:"35000"
+      idProduct:1,
+      name:"Mouse inalambrico",
+      code:"002",
+      price:"35000",
+      idLocalCreation:2
+    },
+    { idProduct:2,
+      idLocalCreation:2,
+      name:"Teclado inalambrico",
+      code:"003",
+      price:"40000"
     },
     {
-      nombre:"Teclado inalambrico",
-      codigo:"003",
-      precio:"40000"
-    },
-    {
-      nombre:"Monitor",
-      codigo:"004",
-      precio:"230000"
+      idProduct:3,
+      idLocalCreation:2,
+      name:"Monitor",
+      code:"004",
+      price:"230000"
     }
   ];
 

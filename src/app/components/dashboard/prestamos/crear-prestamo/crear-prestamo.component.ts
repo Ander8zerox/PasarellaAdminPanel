@@ -8,6 +8,7 @@ import { Producto } from 'src/app/interfaces/producto';
 import { ProductoService } from 'src/app/services/producto.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-crear-prestamo',
@@ -39,7 +40,8 @@ export class CrearPrestamoComponent implements OnInit {
     private router: Router,
     private fb:FormBuilder,
     private usuarioService:UsuarioService,
-    private productoService:ProductoService) { 
+    private productoService:ProductoService,
+    private _snackBar: MatSnackBar) { 
 
     this.form = this.fb.group(
       {
@@ -81,34 +83,53 @@ export class CrearPrestamoComponent implements OnInit {
     const filterProductValue = value.toLowerCase();
 
     return this.listProductos.filter(producto => 
-      producto.nombre.toLowerCase().includes(filterProductValue)
+      producto.name.toLowerCase().includes(filterProductValue)
       );
       
   }
 
   cargarUsuarios(){
     const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
-    this.usuarioService.getUsuarios(localSession).subscribe(
-      response=>{
+    this.usuarioService.getUsuarios(localSession).subscribe({
+      next:response=>{
         console.log(response)
         this.listUsuarios = response;
+      },error: error =>{
+        this._snackBar.open('Error al cargar la lista de usuarios','',{
+          duration:2500,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        })
       }
-    )
+  });
   }
 
   cargarProductos(){
-    this.listProductos = this.productoService.getProductos();
-    console.log("Lista de productos " + JSON.stringify(this.listProductos));
+    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
+    this.productoService.getProductos(localSession).subscribe({
+      next:response=>{
+        this.listProductos = response;
+        this.dataSource= new MatTableDataSource(this.listProductos);
+      }, error: error =>{
+        this._snackBar.open('Error al cargar la lista de productos','',{
+          duration:2500,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        })
+      }
+  });
   }
 
   AgregarProducto(){
     const productoPrestamo:Producto = {
-      nombre:this.producto.value!,
-      codigo:this.codigo.value!,
-      precio:this.precio.value!
+      idProduct:0,
+      name:this.producto.value!,
+      code:this.codigo.value!,
+      price:this.precio.value!,
+      idLocalCreation:2
     }
 
-    if(productoPrestamo.nombre != ""){
+    if(productoPrestamo.name != ""){
       this.listPrestamo.push(productoPrestamo);
     }
     console.log("Lista de prestamo " + JSON.stringify(this.listPrestamo));
@@ -130,9 +151,9 @@ export class CrearPrestamoComponent implements OnInit {
   cargarCodigoPrecio(){
     this.listProductos.forEach(
       elemento => {
-        if(this.producto.value == elemento.nombre){
-            this.codigo.setValue(elemento.codigo);
-            this.precio.setValue(elemento.precio);
+        if(this.producto.value == elemento.name){
+            this.codigo.setValue(elemento.code);
+            this.precio.setValue(elemento.price);
         }
       }
     )
@@ -146,7 +167,7 @@ export class CrearPrestamoComponent implements OnInit {
     var sum:number =  0;
     this.listPrestamo.forEach(
       elemento => {
-        const total = parseFloat(elemento.precio);
+        const total = parseFloat(elemento.price);
         sum = sum + total;
       }
     )

@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Producto } from '../interfaces/producto';
 
 @Injectable({
@@ -7,30 +9,23 @@ import { Producto } from '../interfaces/producto';
 export class ProductoService {
 
   producto!:Producto;
+  private baseUrl = 'http://localhost:8080/';
 
-  listProductos:Producto[] = [
-    {codigo:"001",nombre:"Mouse inalambrico",precio:"22000"},
-    {codigo:"002",nombre:"Teclado inalambrico",precio:"16000"},
-    {codigo:"003",nombre:"Diadema inalambrica",precio:"38000"},
-    {codigo:"004",nombre:"Monitor",precio:"1500000"},
-    {codigo:"005",nombre:"Memoria ram",precio:"48000"},
-    {codigo:"006",nombre:"Computador portatil",precio:"3000000"},
-    {codigo:"007",nombre:"Disco duro externo",precio:"185000"},
-  ]
+  listProductos:Producto[] = []
 
-  constructor() { }
+  constructor(private http:HttpClient) { }
  
-  getProductoCodigo(codigo:string){
-    this.listProductos.forEach(element => {
-      if(element.codigo == codigo){
-        this.producto = element;
-      }
-    });
+  getProductoId(id:string):Observable<Producto>{
+    return this.http.get<Producto>(this.baseUrl + "productObtainById?idProduct="+id);
 
-    return this.producto;
+}
+ 
+  getProductos(idLocalCreation:string){
+    return this.http.get<Producto[]>(this.baseUrl + "productObtainAll?idLocalCreation="+idLocalCreation);
+
   }
- 
-  getProductos(){
-    return this.listProductos.slice();
+
+  updateProducto(id:number,producto:Producto):Observable<Producto>{
+    return this.http.put<Producto>(this.baseUrl + "productUpdating/"+id,producto);
   }
 }

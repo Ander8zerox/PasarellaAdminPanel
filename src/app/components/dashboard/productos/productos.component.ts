@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Producto } from 'src/app/interfaces/producto';
 import { ProductoService } from 'src/app/services/producto.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-productos',
@@ -19,16 +20,29 @@ export class ProductosComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private productoService:ProductoService) { }
+  constructor(private productoService:ProductoService,
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.cargarProductos();
   }
 
   cargarProductos(){
-    this.listProductos = this.productoService.getProductos();
-    this.dataSource= new MatTableDataSource(this.listProductos);
-    console.log("Lista de productos " + JSON.stringify(this.listProductos));
+    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
+
+    this.productoService.getProductos(localSession).subscribe({
+      next:response=>{
+        this.listProductos = response;
+        this.dataSource= new MatTableDataSource(this.listProductos);
+        console.log(this.listProductos);
+      }, error: error =>{
+        this._snackBar.open('Error al cargar la lista de productos','',{
+          duration:2500,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        })
+      }
+  });
   }
 
   ngAfterViewInit() {

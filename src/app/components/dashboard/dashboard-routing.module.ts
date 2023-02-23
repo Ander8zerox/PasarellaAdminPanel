@@ -21,7 +21,7 @@ const routes: Routes = [
     {path: 'crear-prestamo', component:CrearPrestamoComponent},
     {path: 'productos', component:ProductosComponent},
     {path: 'crear-producto', component:CrearProductoComponent},
-    {path:'editar-producto/:codigo', component:CrearProductoComponent}
+    {path:'editar-producto/:id', component:CrearProductoComponent}
   ]}
 ];
 
