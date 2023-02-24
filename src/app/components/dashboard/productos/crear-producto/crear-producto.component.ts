@@ -16,6 +16,8 @@ export class CrearProductoComponent implements OnInit {
   idProducto:string|null;
   titulo:string = "Crear Producto";
   producto!:Producto;
+  localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
+
 
   constructor(
     private productoService:ProductoService,
@@ -40,30 +42,21 @@ export class CrearProductoComponent implements OnInit {
   }
 
   crearProducto(){
-    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
     const producto:Producto = {
       idProduct:0,
       name: this.form.value.nombre,
       code: this.form.value.codigo,
       price: this.form.value.precio,
-      idLocalCreation:localSession
+      idLocalCreation:this.localSession
     }
 
     this.productoService.crearProducto(producto).subscribe({
       next:response => {
-          this._snackBar.open('Producto creado con exito!','',{
-            duration:3000,
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-          })
+          this.mostrarSnackBar('Producto creado con exito!');
           this.router.navigate(['/dashboard/productos']);
       }, error: error =>{
         console.log(JSON.stringify(error));
-        this._snackBar.open('Ocurrio un error al crear el producto','',{
-          duration:4000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        })
+        this.mostrarSnackBar('Ocurrio un error al crear el producto');
       }
   });
   }
@@ -72,9 +65,7 @@ export class CrearProductoComponent implements OnInit {
     this.router.navigate(['/dashboard/productos']);
   }
 
-  editarProducto(){
-    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
-    
+  editarProducto(){  
     const producto:Producto = {
       idProduct:this.producto.idProduct,
       name: this.form.value.nombre,
@@ -93,11 +84,7 @@ export class CrearProductoComponent implements OnInit {
           this.router.navigate(['/dashboard/productos']);
       }, error: error =>{
         console.log(JSON.stringify(error));
-        this._snackBar.open('Ocurrio un error al editar el producto','',{
-          duration:4000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        })
+        this.mostrarSnackBar('Ocurrio un error al editar el producto');
       }
   });
   }
@@ -117,15 +104,19 @@ export class CrearProductoComponent implements OnInit {
                   precio: this.producto.price
                 })
           },error: error =>{
-            this._snackBar.open('Error al cargar la lista de productos','',{
-              duration:2500,
-              horizontalPosition: 'center',
-              verticalPosition: 'bottom',
-            })
+            this.mostrarSnackBar('Error al cargar la lista de productos');
           }
         }
       );
     }
+  }
+
+  mostrarSnackBar(message:string){
+    this._snackBar.open(message,'',{
+      duration:3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    })
   }
 
 }

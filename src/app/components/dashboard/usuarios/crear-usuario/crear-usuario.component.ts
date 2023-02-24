@@ -18,6 +18,8 @@ export class CrearUsuarioComponent implements OnInit {
   id:string|null;
   titulo:string = "Crear Usuario";
   usuario!:Usuario;
+  localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
+
 
   constructor(private fb:FormBuilder,
      private usuarioService:UsuarioService,
@@ -43,7 +45,6 @@ export class CrearUsuarioComponent implements OnInit {
   }
 
   agregarUsuario(){
-    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
     const user:Usuario = {
       idCustomer:0,
       name: this.form.value.nombre,
@@ -51,23 +52,14 @@ export class CrearUsuarioComponent implements OnInit {
       telephone: this.form.value.telefono,
       jobLocalName:this.form.value.local,
       gender: this.form.value.sexo,
-      idLocalCreation:localSession
+      idLocalCreation:this.localSession
     }
     this.usuarioService.agregarusuario(user).subscribe({
       next:response => {
           this.router.navigate(['/dashboard/usuarios']);
-
-          this._snackBar.open('Usuario agregado con exito!','',{
-            duration:1500,
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-          })
+          this.mostrarSnackBar('Usuario agregado con exito!');
       }, error: error =>{
-        this._snackBar.open('Ocurrio un error al agregar el usuario','',{
-          duration:1500,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        })
+        this.mostrarSnackBar('Ocurrio un error al agregar el usuario');
       }
   });
 
@@ -102,8 +94,6 @@ export class CrearUsuarioComponent implements OnInit {
   }
 
   editarUsuario(){
-
-    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
     const customer:Usuario = {
       idCustomer:this.usuario.idCustomer,
       name: this.form.value.nombre,
@@ -111,25 +101,25 @@ export class CrearUsuarioComponent implements OnInit {
       telephone: this.form.value.telefono,
       jobLocalName:this.form.value.local,
       gender: this.form.value.sexo,
-      idLocalCreation:localSession
+      idLocalCreation:this.localSession
     }
     this.usuarioService.updateUsuarios(customer.idCustomer,customer).subscribe({
         next:response => {
-            this._snackBar.open('Usuario editado con exito!','',{
-              duration:3000,
-              horizontalPosition: 'center',
-              verticalPosition: 'bottom',
-            })
+            this.mostrarSnackBar('Usuario editado con exito!');
             this.router.navigate(['/dashboard/usuarios']);
         }, error: error =>{
           console.log(JSON.stringify(error));
-          this._snackBar.open('Ocurrio un error al editar el usuario','',{
-            duration:4000,
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-          })
+          this.mostrarSnackBar('Ocurrio un error al editar el usuario');
         }
     });
+  }
+
+  mostrarSnackBar(message:string){
+    this._snackBar.open(message,'',{
+      duration:3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    })
   }
 
 }

@@ -101,8 +101,6 @@ export class PrestamosComponent implements OnInit {
           this.listPrestamos = response;
           this.dataSource = new MatTableDataSource(this.listPrestamos);
           this.dataSource.paginator = this.paginator;
-          console.log("esto fue lo que me lleve : " + JSON.stringify(fechaCreacion));
-          console.log("esto fue lo que encontre : " + response);
         }, error: error =>{
           this._snackBar.open('Error al cargar la lista de prestamos','',{
             duration:2500,

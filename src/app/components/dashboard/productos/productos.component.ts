@@ -36,11 +36,7 @@ export class ProductosComponent implements OnInit {
         this.dataSource= new MatTableDataSource(this.listProductos);
         console.log(this.listProductos);
       }, error: error =>{
-        this._snackBar.open('Error al cargar la lista de productos','',{
-          duration:2500,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        })
+        this.mostrarSnackBar('Error al cargar la lista de productos');
       }
   });
   }
@@ -56,11 +52,15 @@ export class ProductosComponent implements OnInit {
   }
 
   eliminarProducto(index: number){
-      this._snackBar.open('No es posible eliminar productos en este momento','',{
-        duration:2500,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      })
+    this.mostrarSnackBar('No es posible eliminar productos en este momento');
+  }
+
+  mostrarSnackBar(message:string){
+    this._snackBar.open(message,'',{
+      duration:3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    })
   }
 
 }
