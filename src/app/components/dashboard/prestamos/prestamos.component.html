@@ -52,26 +52,26 @@
             <!-- Column -->
             <ng-container matColumnDef="fechaPrestamo">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Prestamo </th>
-              <td mat-cell *matCellDef="let element"> {{element.fechaPrestamo}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.dateLending}} </td>
             </ng-container>
           
             <!-- Column -->
             <ng-container matColumnDef="nombreCliente">
               <th mat-header-cell *matHeaderCellDef> Cliente </th>
-              <td mat-cell *matCellDef="let element"> {{element.nombreCliente}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.customerName}} </td>
             </ng-container>
           
             <!-- Column -->
             <ng-container matColumnDef="local">
               <th mat-header-cell *matHeaderCellDef> Local </th>
-              <td mat-cell *matCellDef="let element"> {{element.local}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.jobLocal}} </td>
             </ng-container>
       
             <!-- Column -->
             <ng-container matColumnDef="detalle">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Detalle </th>
                 <td mat-cell *matCellDef="let element, let i = index"> 
-                  <a class="pointer" style="color: #1f516f" (click)="openDialog('0ms', '0ms',element.idPrestamo)" matTooltip="Ver Detalle">
+                  <a class="pointer" style="color: #1f516f" (click)="openDialog('0ms', '0ms',element.idLending)" matTooltip="Ver Detalle">
                     <mat-icon>search</mat-icon>
                 </a>
                 </td>
@@ -80,13 +80,13 @@
             <!-- Column -->
             <ng-container matColumnDef="observacion">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Observacion </th>
-              <td mat-cell *matCellDef="let element"> {{element.observacion}} </td>
+              <td mat-cell *matCellDef="let element"> {{element.observation}} </td>
             </ng-container>
       
               <!-- Column -->
             <ng-container matColumnDef="estado">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
-                <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
               </ng-container>
           
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -43,6 +43,7 @@ loading = false;
 
         const user:any = response;
         if(null != user && password == user.password){
+          //Pendiente encriptar 
           sessionStorage.setItem('LocalInSession', user.idLocalCreation);
           this.fakeLoading();
         }else{

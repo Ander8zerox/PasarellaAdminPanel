@@ -5,8 +5,9 @@ export interface Prestamo{
     dateLending:string;
     customerName:string;
     idCustomer:number;
+    jobLocal:string;
     status:string;
-    totalAmount:string;
+    totalAmount:number;
     products:Producto[];
     observation:string;
     idLocalCreation:number;

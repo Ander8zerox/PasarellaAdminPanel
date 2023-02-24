@@ -8,7 +8,7 @@
                 <mat-grid-tile [colspan]="1" [rowspan]="1">
                     <mat-form-field class="ancho">
                         <mat-label>Fecha</mat-label>
-                        <input [disabled]="true" matInput autocomplete="off" [value]="fecha | date: 'medium'">
+                        <input [disabled]="true" matInput autocomplete="off" [value]="fecha | date: 'fullDate'">
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="2" [rowspan]="1">
@@ -25,7 +25,7 @@
                         </mat-form-field>
                         <mat-form-field class="ancho" style="margin-left: 9px;">
                             <mat-label>Local</mat-label>
-                            <input matInput autocomplete="off" [value]="local">
+                            <input matInput autocomplete="off" [formControl]="jobLocal">
                         </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="3" [rowspan]="1">
@@ -42,11 +42,11 @@
                     </mat-form-field>
                     <mat-form-field class="ancho" style="margin-left: 9px;">
                         <mat-label>Codigo</mat-label>
-                        <input matInput autocomplete="off" [formControl]="codigo">
+                        <input matInput autocomplete="off" [formControl]="codigo" readonly>
                     </mat-form-field>
                     <mat-form-field class="ancho" style="margin-left: 9px;">
                         <mat-label>Precio</mat-label>
-                        <input matInput autocomplete="off" [formControl]="precio">
+                        <input matInput autocomplete="off" [formControl]="precio" readonly>
                     </mat-form-field>
             </mat-grid-tile>
             <mat-grid-tile [colspan]="1" [rowspan]="1" >
@@ -55,15 +55,15 @@
             <mat-grid-tile [colspan]="3" [rowspan]="1">
                 <mat-form-field class="ancho">
                     <mat-label>Estado</mat-label>
-                    <input [disabled]="true" matInput autocomplete="off" [value]="estado">
+                    <input matInput autocomplete="off" [formControl]="estado" readonly>
                 </mat-form-field>
                 <mat-form-field class="ancho" style="margin-left: 9px;">
                     <mat-label>Observaciòn</mat-label>
-                    <textarea matInput [formControl]="observacion"></textarea>
+                    <textarea matInput formControlName ="observacion"></textarea>
                 </mat-form-field>
                 <mat-form-field class="ancho">
                     <mat-label>Total</mat-label>
-                    <input [disabled]="true" matInput autocomplete="off" [formControl]="total">
+                    <input matInput autocomplete="off" [formControl]="total">
                 </mat-form-field>
             </mat-grid-tile> 
             </mat-grid-list>               
@@ -93,7 +93,7 @@
             <ng-container matColumnDef="acciones">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element; let i = index" style="text-align: right;">
-                <a class="pointer" (click)="eliminarProducto(i)" style="color: #e15639" matTooltip="Eliminar Usuario">
+                <a class="pointer" (click)="eliminarProducto(i)" style="color: #e15639" matTooltip="Eliminar Producto">
                     <mat-icon>delete</mat-icon>
                 </a>
             </td>

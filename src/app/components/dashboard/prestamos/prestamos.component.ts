@@ -90,17 +90,14 @@ export class PrestamosComponent implements OnInit {
   buscarPrestamos(){
     const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
     const fecha = this.form.value.fecha;
-    this.prestamoService.getPrestamosFechaYLocalCreacion(fecha,localSession).subscribe(
+    this.prestamoService.getPrestamosFechaYLocalCreacion("19 feb 2023, 7:36:24",localSession).subscribe(
       {
         next:response=>{
           this.listPrestamos = response;
           this.dataSource = new MatTableDataSource(this.listPrestamos);
           this.dataSource.paginator = this.paginator;
-          this._snackBar.open('Lista de productos cargada','',{
-            duration:2500,
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-          })
+          console.log("esto fue lo que me lleve : " + fecha);
+          console.log("esto fue lo que encontre : " + response);
         }, error: error =>{
           this._snackBar.open('Error al cargar la lista de prestamos','',{
             duration:2500,
@@ -114,11 +111,6 @@ export class PrestamosComponent implements OnInit {
 
   limpiarFiltros(){
     this.form.reset();
-  }
-
-  cargarPrestamos(fecha:string,localCreacion:number){
-    console.log("wue paso");
-    
   }
 
   cargarDetallePrestamo(idPrestamo: number){

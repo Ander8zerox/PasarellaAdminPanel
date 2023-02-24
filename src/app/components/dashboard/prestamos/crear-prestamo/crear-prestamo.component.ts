@@ -9,6 +9,9 @@ import { ProductoService } from 'src/app/services/producto.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Prestamo } from 'src/app/interfaces/prestamo';
+import { DatePipe } from '@angular/common';
+import { PrestamoService } from 'src/app/services/prestamo.service';
 
 @Component({
   selector: 'app-crear-prestamo',
@@ -20,20 +23,26 @@ export class CrearPrestamoComponent implements OnInit {
   form:FormGroup;
   nombreCliente = new FormControl('');
   producto =  new FormControl('');
-  local:string="";
   codigo = new FormControl('');
   precio = new FormControl('');
   total = new FormControl('');
-  observacion=  new FormControl('');
-  titulo:string = "Crear Prestamo";
+  observacion =  new FormControl('');
+  jobLocal = new FormControl('');
+  estado = new FormControl('Pendiente'); 
+  
   listUsuarios: Usuario[]=[];
   listProductos: Producto[]=[];
   listPrestamo:Producto[]=[];
+  idCliente:number = 0;
+  idProducto:number = 0;
+  localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
+
+  displayedColumns: string[] = ['codigo', 'producto', 'precio','acciones'];
+  titulo:string = "Crear Prestamo"; 
+
   filteredOptions!: Observable<Usuario[]>;
   filteredProductOptions!: Observable<Producto[]>;
   fecha:Date = new Date()
-  estado:string="Pendiente";
-  displayedColumns: string[] = ['codigo', 'producto', 'precio','acciones'];
   dataSource!: MatTableDataSource<any>;
 
   constructor(
@@ -41,15 +50,16 @@ export class CrearPrestamoComponent implements OnInit {
     private fb:FormBuilder,
     private usuarioService:UsuarioService,
     private productoService:ProductoService,
+    private prestamoService:PrestamoService,
     private _snackBar: MatSnackBar) { 
 
     this.form = this.fb.group(
       {
-        fechaPrestamo:['',Validators.required],
+        //fechaPrestamo:['',Validators.required],
         //nombreCliente:['',Validators.required],
         //local:['',Validators.required],
-        estado:['',Validators.required],
-        observacion:['',Validators.required]
+        //estado:['',Validators.required],
+        observacion:['']
       }
     );
   }
@@ -74,7 +84,7 @@ export class CrearPrestamoComponent implements OnInit {
     const filterValue = value.toLowerCase();
 
     return this.listUsuarios.filter(usuario => 
-      usuario.name.toLowerCase().includes(filterValue)
+      usuario.name.toLowerCase().includes(filterValue)    
       );
       
   }
@@ -89,58 +99,49 @@ export class CrearPrestamoComponent implements OnInit {
   }
 
   cargarUsuarios(){
-    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
-    this.usuarioService.getUsuarios(localSession).subscribe({
+    this.usuarioService.getUsuarios(this.localSession).subscribe({
       next:response=>{
-        console.log(response)
         this.listUsuarios = response;
       },error: error =>{
-        this._snackBar.open('Error al cargar la lista de usuarios','',{
-          duration:2500,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        })
+        this.mostrarSnackBar('Error al cargar la lista de usuarios');
       }
   });
   }
 
   cargarProductos(){
-    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
-    this.productoService.getProductos(localSession).subscribe({
-      next:response=>{
-        this.listProductos = response;
-      }, error: error =>{
-        this._snackBar.open('Error al cargar la lista de productos','',{
-          duration:2500,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        })
-      }
-  });
+      this.productoService.getProductos(this.localSession).subscribe({
+        next:response=>{
+          this.listProductos = response;
+        }, error: error =>{
+          this.mostrarSnackBar('Error al cargar la lista de productos');
+        }
+    });
   }
 
   AgregarProducto(){
     const productoPrestamo:Producto = {
-      idProduct:0,
+      idProduct:this.idProducto,
       name:this.producto.value!,
       code:this.codigo.value!,
       price:this.precio.value!,
-      idLocalCreation:2
+      idLocalCreation:this.localSession
     }
 
     if(productoPrestamo.name != ""){
       this.listPrestamo.push(productoPrestamo);
     }
-    console.log("Lista de prestamo " + JSON.stringify(this.listPrestamo));
+    else{
+      this.mostrarSnackBar("Debe seleccionar un producto para agregar")
+    }
   }
 
   cargarLocal(){
      
-    console.log("Este es el nombre del cliente " + this.nombreCliente.value);
       this.listUsuarios.forEach(
         elemento => {
           if(this.nombreCliente.value == elemento.name){
-              this.local = elemento.jobLocalName;
+              this.jobLocal.setValue(elemento.jobLocalName);
+              this.idCliente = elemento.idCustomer;
           }
         }
       )
@@ -153,6 +154,7 @@ export class CrearPrestamoComponent implements OnInit {
         if(this.producto.value == elemento.name){
             this.codigo.setValue(elemento.code);
             this.precio.setValue(elemento.price);
+            this.idProducto = elemento.idProduct;
         }
       }
     )
@@ -160,6 +162,40 @@ export class CrearPrestamoComponent implements OnInit {
   
   crearPrestamo(){
 
+    if(this.nombreCliente.value == ""){
+      this.mostrarSnackBar("Debe seleccionar un cliente");
+    }else
+    if(this.listPrestamo.length <= 0){
+      this.mostrarSnackBar("Debe agregar al menos un producto");
+    }else
+    {
+      var datePipe = new DatePipe('es-ES');
+      var fechaCreacion = datePipe.transform(this.fecha,'EEEE, MMMM d, y');
+      const prestamoCrear:Prestamo = {
+          idLending:0,
+          dateLending:JSON.stringify(fechaCreacion),
+          customerName:this.nombreCliente.value!,
+          idCustomer:this.idCliente,
+          jobLocal:this.jobLocal.value!,
+          status:this.estado.value!,
+          totalAmount:Number(this.total.value!),
+          products:this.listPrestamo,
+          observation:this.form.value.observacion,
+          idLocalCreation:this.localSession
+      }
+
+      this.prestamoService.agregarPrestamo(prestamoCrear).subscribe(
+        {
+          next:response => {
+              this.mostrarSnackBar("Prestamo creado con exito!");
+              this.limpiarCampos();
+          }, error: error => {
+              this.mostrarSnackBar("Ocurrio un error al crear el prestamo");
+              console.log(error)
+          } 
+        }
+      );
+    }
   }
 
   cargarTotal(){
@@ -170,7 +206,6 @@ export class CrearPrestamoComponent implements OnInit {
         sum = sum + total;
       }
     )
-
     this.total.setValue(sum.toString());
   }
 
@@ -183,13 +218,30 @@ export class CrearPrestamoComponent implements OnInit {
   }
 
   eliminarProducto(index: number){
-    console.log(index);
     this.listPrestamo.splice(index,1);
     this.cargarTabla();
   }
 
   volver(){
     this.router.navigate(['/dashboard/prestamos']);
+  }
+
+  limpiarCampos(){
+    this.form.reset();
+    this.nombreCliente.reset();
+    this.total.reset();
+    this.jobLocal.reset();
+    this.listPrestamo = [];
+    this.dataSource = new MatTableDataSource(this.listPrestamo);
+
+  }
+
+  mostrarSnackBar(message:string){
+    this._snackBar.open(message,'',{
+      duration:3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    })
   }
 
 }
