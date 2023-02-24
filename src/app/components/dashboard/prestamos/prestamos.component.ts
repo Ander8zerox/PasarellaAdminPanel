@@ -26,7 +26,7 @@ export class PrestamosComponent implements OnInit {
   localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
 
   displayedColumns: string[] = ['select','fechaPrestamo', 'nombreCliente', 
-  'local','detalle' ,'estado','observacion'];
+  'estado','observacion','local','detalle'];
   dataSource!: MatTableDataSource<any>;
   selection = new SelectionModel<any>(true, []);
 

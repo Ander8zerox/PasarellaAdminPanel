@@ -20,6 +20,7 @@ export class DetallePrestamoComponent implements OnInit {
   estado = new FormControl('');
   totalAmount = new FormControl('');
   observacion = new FormControl('');
+  initialObservation!:string;
   form:FormGroup;
 
   constructor(
@@ -38,32 +39,35 @@ export class DetallePrestamoComponent implements OnInit {
   ngOnInit(): void {
     this.estado.setValue(this.data.status);
     this.totalAmount.setValue(this.data.totalAmount.toString());
+    this.initialObservation = this.data.observation;
     this.observacion.setValue(this.data.observation);
     this.dataSource = new MatTableDataSource(this.data.products);
+    this.mostrarSnackBar("Recuerde dejar una observación siempre que realice una modificación");
   }
 
   editarPrestamo(){
-    const prestamo:Prestamo = {
-      idLending:this.data.idLending,
-      dateLending:this.data.dateLending,
-      customerName:this.data.customerName,
-      idCustomer:this.data.idCustomer,
-      jobLocal:this.data.jobLocal,
-      status:this.estado.value!,
-      totalAmount:Number(this.totalAmount.value!),
-      products:this.data.products,
-      observation:this.observacion.value!,
-      idLocalCreation:this.data.idLocalCreation
-    }
-    this.prestamoService.updatePrestamo(prestamo.idLending,prestamo).subscribe({
-      next:response => {
-        console.log(prestamo)
-          this.mostrarSnackBar("Prestamo editado con exito!");
-      }, error: error =>{
-        console.log(JSON.stringify(error));
-        this.mostrarSnackBar("Ocurrio un error al editar el prestamo");
-      }
-  });
+            const prestamo:Prestamo = {
+            idLending:this.data.idLending,
+            dateLending:this.data.dateLending,
+            customerName:this.data.customerName,
+            idCustomer:this.data.idCustomer,
+            jobLocal:this.data.jobLocal,
+            status:this.estado.value!,
+            totalAmount:Number(this.totalAmount.value!),
+            products:this.data.products,
+            observation:this.observacion.value!,
+            idLocalCreation:this.data.idLocalCreation
+          }
+          this.prestamoService.updatePrestamo(prestamo.idLending,prestamo).subscribe({
+            next:response => {
+              console.log(prestamo)
+                this.mostrarSnackBar("Prestamo editado con exito!");
+            }, error: error =>{
+              console.log(JSON.stringify(error));
+              this.mostrarSnackBar("Ocurrio un error al editar el prestamo");
+            }
+        });
+    
   }
 
   eliminarProducto(index: number){
