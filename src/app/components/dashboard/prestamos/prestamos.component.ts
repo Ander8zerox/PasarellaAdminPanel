@@ -9,6 +9,7 @@ import { PrestamoService } from 'src/app/services/prestamo.service';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { DetallePrestamoComponent } from './detalle-prestamo/detalle-prestamo.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class PrestamosComponent implements OnInit {
   listPrestamos:Prestamo[]=[];
   estado: any[] = ['Asignado','Pendiente','Cancelado','Terminado'];
   prestamo!:Prestamo;
+  localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
 
   displayedColumns: string[] = ['select','fechaPrestamo', 'nombreCliente', 
   'local','detalle' ,'estado','observacion'];
@@ -88,15 +90,18 @@ export class PrestamosComponent implements OnInit {
   }
 
   buscarPrestamos(){
-    const localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
+    
     const fecha = this.form.value.fecha;
-    this.prestamoService.getPrestamosFechaYLocalCreacion("19 feb 2023, 7:36:24",localSession).subscribe(
+    var datePipe = new DatePipe('es-ES');
+    var fechaCreacion = datePipe.transform(fecha,'EEEE, MMMM d, y');
+    
+    this.prestamoService.getPrestamosFechaYLocalCreacion(fechaCreacion!.toString(),this.localSession).subscribe(
       {
         next:response=>{
           this.listPrestamos = response;
           this.dataSource = new MatTableDataSource(this.listPrestamos);
           this.dataSource.paginator = this.paginator;
-          console.log("esto fue lo que me lleve : " + fecha);
+          console.log("esto fue lo que me lleve : " + JSON.stringify(fechaCreacion));
           console.log("esto fue lo que encontre : " + response);
         }, error: error =>{
           this._snackBar.open('Error al cargar la lista de prestamos','',{
@@ -126,7 +131,7 @@ export class PrestamosComponent implements OnInit {
   openDialog(enterAnimationDuration: string, exitAnimationDuration: string, idPrestamo:number): void {
     this.cargarDetallePrestamo(idPrestamo);
     const dialogRef = this.dialog.open(DetallePrestamoComponent, {
-      width: '480px',
+      width: '460px',
       height: '450px',
       enterAnimationDuration,
       exitAnimationDuration,

@@ -173,7 +173,7 @@ export class CrearPrestamoComponent implements OnInit {
       var fechaCreacion = datePipe.transform(this.fecha,'EEEE, MMMM d, y');
       const prestamoCrear:Prestamo = {
           idLending:0,
-          dateLending:JSON.stringify(fechaCreacion),
+          dateLending:fechaCreacion!.toString(),
           customerName:this.nombreCliente.value!,
           idCustomer:this.idCliente,
           jobLocal:this.jobLocal.value!,

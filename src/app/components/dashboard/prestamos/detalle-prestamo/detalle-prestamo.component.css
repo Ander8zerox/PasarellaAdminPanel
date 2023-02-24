@@ -15,3 +15,8 @@ button {
   th {
     width: 15%;
   }
+
+  .ancho{
+    width: 90%;
+    height: 10%;
+}
