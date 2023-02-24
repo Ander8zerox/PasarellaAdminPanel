@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PrestamoService } from 'src/app/services/prestamo.service';
+import { Producto } from 'src/app/interfaces/producto';
 
 @Component({
   selector: 'app-detalle-prestamo',
@@ -67,7 +68,9 @@ export class DetallePrestamoComponent implements OnInit {
 
   eliminarProducto(index: number){
       if(this.data.products.length > 1){
+        const internalProduct:Producto = this.data.products.at(index)!;
         this.data.products.splice(index,1);
+        this.cargarTotal(internalProduct.price);
         this.dataSource = new MatTableDataSource(this.data.products);
       }else{
         this.mostrarSnackBar("Debe cambiar el estado a 'Cerrado' en lugar de eliminar todos los productos");
@@ -81,9 +84,23 @@ export class DetallePrestamoComponent implements OnInit {
   mostrarSnackBar(message:string){
     this._snackBar.open(message,'',{
       duration:3500,
-      horizontalPosition: 'center',
+      horizontalPosition: 'right',
       verticalPosition: 'bottom',
     })
+  }
+
+  cargarTotal(restaValue:string){
+    //no se esta usando de momento
+    var sum:number =  0;
+    this.data.products.forEach(
+      elemento => {
+        const total = parseFloat(elemento.price);
+        sum = sum + total;
+      }
+    )//no se esta usando de momento
+
+    var resta = Number(this.totalAmount.value) - Number(restaValue);
+    this.totalAmount.setValue(resta.toString());
   }
 
 }
