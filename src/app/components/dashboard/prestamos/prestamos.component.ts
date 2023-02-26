@@ -99,14 +99,14 @@ export class PrestamosComponent implements OnInit {
       {
         next:response=>{
           this.listPrestamos = response;
-          this.dataSource = new MatTableDataSource(this.listPrestamos);
-          this.dataSource.paginator = this.paginator;
+          if(this.listPrestamos.length === 0){
+            this.mostrarSnackBar('No se encontraron prestamos para la fecha seleccionada');
+          }else{
+            this.dataSource = new MatTableDataSource(this.listPrestamos);
+            this.dataSource.paginator = this.paginator;
+          }
         }, error: error =>{
-          this._snackBar.open('Error al cargar la lista de prestamos','',{
-            duration:2500,
-            horizontalPosition: 'center',
-            verticalPosition: 'bottom',
-          })
+          this.mostrarSnackBar('Error al cargar la lista de prestamos');
         }
       }
     );
@@ -135,6 +135,14 @@ export class PrestamosComponent implements OnInit {
       exitAnimationDuration,
       data:this.prestamo
     });
+  }
+
+  mostrarSnackBar(message:string){
+    this._snackBar.open(message,'',{
+      duration:3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    })
   }
 
 }
