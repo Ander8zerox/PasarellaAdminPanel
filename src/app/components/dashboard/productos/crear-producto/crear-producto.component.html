@@ -23,7 +23,7 @@
                 <mat-grid-tile [colspan]="1" [rowspan]="1" >
                     <mat-form-field class="ancho">
                         <mat-label>Precio</mat-label>
-                        <input matInput autocomplete="off" formControlName="precio">
+                        <input matInput autocomplete="off" formControlName="precio" (keypress)="($event.charCode >= 48 && $event.charCode < 58)">
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="1" [rowspan]="1" >

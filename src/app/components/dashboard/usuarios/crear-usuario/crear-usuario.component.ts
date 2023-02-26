@@ -31,7 +31,7 @@ export class CrearUsuarioComponent implements OnInit {
       {
         nombre:['',Validators.required],
         documento:['',Validators.required],
-        telefono:['',Validators.required,Validators.pattern(/^[1-9]\d{6,10}$/)],
+        telefono:['',Validators.required],
         local:['',Validators.required],
         sexo:['',Validators.required]
       }

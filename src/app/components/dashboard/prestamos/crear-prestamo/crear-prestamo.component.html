@@ -63,7 +63,7 @@
                 </mat-form-field>
                 <mat-form-field class="ancho">
                     <mat-label>Total</mat-label>
-                    <input matInput autocomplete="off" [formControl]="total">
+                    <input matInput autocomplete="off" [formControl]="total" (keypress)="($event.charCode >= 48 && $event.charCode < 58)">
                 </mat-form-field>
             </mat-grid-tile> 
             </mat-grid-list>               
