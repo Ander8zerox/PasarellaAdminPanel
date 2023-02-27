@@ -58,6 +58,8 @@ export class DetallePrestamoComponent implements OnInit {
             observation:this.observacion.value!,
             idLocalCreation:this.data.idLocalCreation
           }
+
+          console.log(prestamo);
           this.prestamoService.updatePrestamo(prestamo.idLending,prestamo).subscribe({
             next:response => {
               console.log(prestamo)

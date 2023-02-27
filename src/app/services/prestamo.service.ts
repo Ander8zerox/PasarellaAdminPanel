@@ -30,6 +30,11 @@ agregarPrestamo(prestamo:Prestamo):Observable<Prestamo>{
 
   }
 
+  getPrestamosEstadoYLocalCreacion(status:string,idLocalCreation:number){
+    return this.http.get<Prestamo[]>(this.baseUrl + "lendingsObtainByStatus?status="+status+"&idLocalCreation="+idLocalCreation);
+
+  }
+
   updatePrestamo(id:number,prestamo:Prestamo):Observable<Prestamo>{
     return this.http.put<Prestamo>(this.baseUrl + "lendingUpdating/"+id,prestamo);
   }

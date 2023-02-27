@@ -15,3 +15,14 @@ table {
   .pointer{
     cursor: pointer;
   }
+
+  .pasarela-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    align-items: flex-start;
+  }
+  
+  .pasarela-radio-button {
+    margin: 2px;
+  }

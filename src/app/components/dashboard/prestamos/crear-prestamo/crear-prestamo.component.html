@@ -25,11 +25,16 @@
                         </mat-form-field>
                         <mat-form-field class="ancho" style="margin-left: 9px;">
                             <mat-label>Local</mat-label>
-                            <input matInput autocomplete="off" [formControl]="jobLocal">
+                            <input matInput autocomplete="off" [formControl]="jobLocal" readonly>
                         </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="3" [rowspan]="1">
-                    <mat-form-field class="ancho">
+                    
+                    <mat-form-field class="ancho" style="margin-left: 9px;">
+                        <mat-label>Estado</mat-label>
+                        <input matInput autocomplete="off" [formControl]="estado" readonly>
+                    </mat-form-field>
+                    <mat-form-field class="ancho" style="margin-left: 9px;">
                         <mat-label>Producto</mat-label>
                         <input matInput 
                         [formControl]="producto"
@@ -40,27 +45,23 @@
                             </mat-option>
                         </mat-autocomplete>
                     </mat-form-field>
-                    <mat-form-field class="ancho" style="margin-left: 9px;">
+                    <!--<mat-form-field class="ancho" style="margin-left: 9px;">
                         <mat-label>Codigo</mat-label>
                         <input matInput autocomplete="off" [formControl]="codigo" readonly>
                     </mat-form-field>
                     <mat-form-field class="ancho" style="margin-left: 9px;">
                         <mat-label>Precio</mat-label>
                         <input matInput autocomplete="off" [formControl]="precio" readonly>
+                    </mat-form-field>-->
+                    <mat-form-field class="ancho" style="margin-left: 9px;">
+                        <mat-label>Observaciòn</mat-label>
+                        <textarea matInput formControlName ="observacion"></textarea>
                     </mat-form-field>
             </mat-grid-tile>
             <mat-grid-tile [colspan]="1" [rowspan]="1" >
                 <button type="button" (click)="cargarLocal();cargarCodigoPrecio();AgregarProducto();cargarTabla()" mat-raised-button style="margin-right: 10px;" color="primary">Agregar</button>
             </mat-grid-tile>
-            <mat-grid-tile [colspan]="3" [rowspan]="1">
-                <mat-form-field class="ancho">
-                    <mat-label>Estado</mat-label>
-                    <input matInput autocomplete="off" [formControl]="estado" readonly>
-                </mat-form-field>
-                <mat-form-field class="ancho" style="margin-left: 9px;">
-                    <mat-label>Observaciòn</mat-label>
-                    <textarea matInput formControlName ="observacion"></textarea>
-                </mat-form-field>
+            <mat-grid-tile [colspan]="1" [rowspan]="1">
                 <mat-form-field class="ancho">
                     <mat-label>Total</mat-label>
                     <input matInput autocomplete="off" [formControl]="total" (keypress)="($event.charCode >= 48 && $event.charCode < 58)">

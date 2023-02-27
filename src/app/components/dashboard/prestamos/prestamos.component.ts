@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import {SelectionModel} from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -10,6 +10,7 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { DetallePrestamoComponent } from './detalle-prestamo/detalle-prestamo.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
+import { TitleStrategy } from '@angular/router';
 
 
 @Component({
@@ -21,8 +22,11 @@ export class PrestamosComponent implements OnInit {
 
   form:FormGroup;
   listPrestamos:Prestamo[]=[];
-  estado: any[] = ['Asignado','Pendiente','Cancelado','Terminado'];
+  estadoSelect: any[] = ['Pendiente','Cancelado','Cerrado'];
+  estado = new FormControl('');
   prestamo!:Prestamo;
+  inhabilitarBusqueda:Boolean = true;
+  criterioUltimaBusqueda:string = "";
   localSession:any = null != sessionStorage.getItem('LocalInSession')? sessionStorage.getItem('LocalInSession'):"";
 
   displayedColumns: string[] = ['select','fechaPrestamo', 'nombreCliente', 
@@ -80,8 +84,7 @@ export class PrestamosComponent implements OnInit {
     
     this.form = this.fb.group(
       {
-        fecha:['',Validators.required],
-        recolector:['']
+        fecha:['']
       }
     );
    }
@@ -90,8 +93,21 @@ export class PrestamosComponent implements OnInit {
   }
 
   buscarPrestamos(){
+
+    if(null != this.form.value.fecha && this.form.value.fecha != ""){
+      console.log(this.form.value.fecha);
+      this.buscarPorFecha();
+    }else if(null != this.estado.value && this.estado.value != ""){
+      this.buscarPorEstado();
+    }else{
+      this.mostrarSnackBar("Debe seleccionar una fecha o un estado para cargar la busqueda");
+    }
     
+  }
+
+  buscarPorFecha(){
     const fecha = this.form.value.fecha;
+    this.criterioUltimaBusqueda="fecha";
     var datePipe = new DatePipe('es-ES');
     var fechaCreacion = datePipe.transform(fecha,'EEEE, MMMM d, y');
     
@@ -112,8 +128,29 @@ export class PrestamosComponent implements OnInit {
     );
   }
 
+  buscarPorEstado(){
+    const estado = this.estado.value;
+    this.criterioUltimaBusqueda="estado";
+    this.prestamoService.getPrestamosEstadoYLocalCreacion(estado!.toString(),this.localSession).subscribe(
+      {
+        next:response=>{
+          this.listPrestamos = response;
+          if(this.listPrestamos.length === 0){
+            this.mostrarSnackBar('No se encontraron prestamos para el estado seleccionado');
+          }else{
+            this.dataSource = new MatTableDataSource(this.listPrestamos);
+            this.dataSource.paginator = this.paginator;
+          }
+        }, error: error =>{
+          this.mostrarSnackBar('Error al cargar la lista de prestamos');
+        }
+      }
+    );
+  }
+
   limpiarFiltros(){
     this.form.reset();
+    this.estado.reset();
   }
 
   cargarDetallePrestamo(idPrestamo: number){
@@ -135,6 +172,15 @@ export class PrestamosComponent implements OnInit {
       exitAnimationDuration,
       data:this.prestamo
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(this.criterioUltimaBusqueda == "fecha") {
+        this.buscarPorFecha();
+      } else if(this.criterioUltimaBusqueda == "estado") {
+        this.buscarPorEstado();
+      }
+      }
+    )
   }
 
   mostrarSnackBar(message:string){
