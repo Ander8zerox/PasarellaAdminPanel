@@ -19,9 +19,12 @@ export class DetallePrestamoComponent implements OnInit {
   estadoSelect: any[] = ['Pendiente','Cancelado','Cerrado'];
   estado = new FormControl('');
   totalAmount = new FormControl('');
+  descuento = new FormControl('');
+  valorSinDescuento = new FormControl('');
   observacion = new FormControl('');
   initialObservation!:string;
   form:FormGroup;
+  guardarDeshabilitado:Boolean=false;
 
   constructor(
     public dialogRef: MatDialogRef<DetallePrestamoComponent>,
@@ -43,6 +46,7 @@ export class DetallePrestamoComponent implements OnInit {
     this.observacion.setValue(this.data.observation);
     this.dataSource = new MatTableDataSource(this.data.products);
     this.mostrarSnackBar("Recuerde dejar una observación siempre que realice una modificación");
+    this.cargarValores();
   }
 
   editarPrestamo(){
@@ -89,24 +93,37 @@ export class DetallePrestamoComponent implements OnInit {
 
   mostrarSnackBar(message:string){
     this._snackBar.open(message,'',{
-      duration:3500,
+      duration:4000,
       horizontalPosition: 'right',
       verticalPosition: 'bottom',
     })
   }
 
   cargarTotal(restaValue:string){
-    //no se esta usando de momento
+   
+     //descontamos del valor total el precio del producto eliminado
+     var resta = Number(this.totalAmount.value) - Number(restaValue);
+     if(resta < 0){
+        this.guardarDeshabilitado=true; // se usara para cuando queramos evitar valores negativos en el valor a pagar
+        this.mostrarSnackBar("Verifíque el valor total ya que el descuento es mayor al valor a pagar");
+     }
+     this.totalAmount.setValue(resta.toString());
+     this.cargarValores();
+   
+  }
+
+  cargarValores(){
     var sum:number =  0;
     this.data.products.forEach(
       elemento => {
         const total = parseFloat(elemento.price);
         sum = sum + total;
       }
-    )//no se esta usando de momento
-
-    var resta = Number(this.totalAmount.value) - Number(restaValue);
-    this.totalAmount.setValue(resta.toString());
+    )
+    //se suman los precios de los productos  en la lista para conocer el valor sin descuento
+    this.valorSinDescuento.setValue(sum.toString());
+    // restamos al valor sin descuento el valor con descuento para conocer el descuento otorgado
+    this.descuento.setValue((Number(this.valorSinDescuento.value) - Number(this.totalAmount.value)).toString());
   }
 
 }

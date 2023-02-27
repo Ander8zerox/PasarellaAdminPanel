@@ -150,7 +150,7 @@ export class PrestamosComponent implements OnInit {
 
   limpiarFiltros(){
     this.form.reset();
-    this.estado.reset();
+    //this.estado.reset();
   }
 
   cargarDetallePrestamo(idPrestamo: number){
@@ -176,7 +176,7 @@ export class PrestamosComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(this.criterioUltimaBusqueda == "fecha") {
         this.buscarPorFecha();
-      } else if(this.criterioUltimaBusqueda == "estado") {
+      } else {
         this.buscarPorEstado();
       }
       }

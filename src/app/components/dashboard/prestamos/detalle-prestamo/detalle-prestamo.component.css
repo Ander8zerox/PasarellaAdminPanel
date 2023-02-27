@@ -20,3 +20,7 @@ button {
     width: 90%;
     height: 10%;
 }
+
+.pointer{
+  cursor: pointer;
+}

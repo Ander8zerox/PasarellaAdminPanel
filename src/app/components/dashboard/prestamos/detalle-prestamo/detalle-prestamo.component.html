@@ -16,7 +16,7 @@
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
         <mat-form-field class="ancho">
-          <mat-label>Valor</mat-label>
+          <mat-label>Valor Total</mat-label>
           <input matInput autocomplete="off" [formControl]="totalAmount">
         </mat-form-field>
       </mat-grid-tile>
@@ -28,6 +28,18 @@
               {{item}}
             </mat-option>
           </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field class="ancho">
+          <mat-label>Valor sin descuento</mat-label>
+          <input [disabled]="true" matInput autocomplete="off" [value]="valorSinDescuento.value">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile [colspan]="1" [rowspan]="1">
+        <mat-form-field class="ancho">
+          <mat-label>Descuento</mat-label>
+          <input [disabled]="true" matInput autocomplete="off" [value]="descuento.value">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile [colspan]="1" [rowspan]="1">
@@ -78,6 +90,6 @@
   </div>
  <!--</mat-form-field>-->
 <div mat-dialog-actions>
-    <button mat-button (click)="cerrar()">Cerrar</button>
-    <button mat-button mat-dialog-close cdkFocusInitial (click)="editarPrestamo()">Guardar</button>
+    <button type="button" mat-raised-button (click)="cerrar()" color="primary">Cerrar</button>
+    <button type="button" mat-raised-button mat-dialog-close cdkFocusInitial (click)="editarPrestamo()" color="primary">Guardar</button>
 </div>
