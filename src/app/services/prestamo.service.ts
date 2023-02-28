@@ -9,7 +9,8 @@ import { Observable } from 'rxjs';
 })
 export class PrestamoService {
   prestamo!:Prestamo;
-  private baseUrl = 'http://localhost:8080/';
+  //private baseUrl = 'http://localhost:8080/';
+  private baseUrl = 'https://pasarelabackend.fly.dev/';
 
   listProductos: Producto[] = [];
 

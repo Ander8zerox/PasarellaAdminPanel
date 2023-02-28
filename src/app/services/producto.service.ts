@@ -9,7 +9,8 @@ import { Producto } from '../interfaces/producto';
 export class ProductoService {
 
   producto!:Producto;
-  private baseUrl = 'http://localhost:8080/';
+  //private baseUrl = 'http://localhost:8080/';
+  private baseUrl = 'https://pasarelabackend.fly.dev/';
 
   listProductos:Producto[] = []
 

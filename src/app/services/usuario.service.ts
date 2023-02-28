@@ -11,7 +11,8 @@ export class UsuarioService {
   listUsuarios: Usuario[] = [];
 
   usuario!:Usuario;
-  private baseUrl = 'http://localhost:8080/'; 
+  //private baseUrl = 'http://localhost:8080/';
+  private baseUrl = 'https://pasarelabackend.fly.dev/'; 
 
   constructor(private http:HttpClient) { }
 
